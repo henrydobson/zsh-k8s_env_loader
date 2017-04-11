@@ -1,0 +1,5 @@
+#compdef k8s_set_env
+
+local -a profiles
+profiles=("${(@f)$(kubectl config get-contexts -o name)}")
+compadd -a profiles

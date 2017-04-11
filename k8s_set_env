@@ -1,0 +1,29 @@
+#!/bin/bash
+function prgreen {
+	echo -n "|"
+	echo -ne "\033[32m$1"
+	echo -e "\033[0m|"
+}
+
+function prred {
+	echo -n "|"
+	echo -ne "\033[31m$1"
+	echo -e "\033[0m|"
+}
+
+if ! [[ -z "$1" ]]
+then
+	profile=${1}
+	echo -n "Loading profile:"
+	if ! [[ "$profile" =~ '^\s*$' ]]
+	then
+		kubectl config set-context ${1}
+		prgreen "DONE"
+		return 0
+	fi
+	(>&2 prred "Profile not found: ${1}")
+	return 1
+else
+	(>&2 echo "Usage: $0 [profile]")
+	return 1
+fi
